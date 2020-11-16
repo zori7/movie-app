@@ -1,15 +1,26 @@
-import { combineReducers, createStore } from 'redux'
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { devToolsEnhancer } from 'redux-devtools-extension'
-import { CounterReducer } from './features/counter'
+import thunk from 'redux-thunk'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+import { MoviesReducer } from './features/movies'
 
-/* Create root reducer, containing all features of the application */
 const rootReducer = combineReducers({
-  count: CounterReducer,
+  movies: MoviesReducer,
 })
 
-const store = createStore(
-  rootReducer,
-  /* preloadedState, */ devToolsEnhancer({})
+const persistConfig = {
+  key: 'root',
+  storage,
+  throttle: 500,
+  whitelist: [],
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+export const store = createStore(
+  persistedReducer,
+  compose(applyMiddleware(thunk), devToolsEnhancer({}))
 )
 
-export default store
+export const persistor = persistStore(store)

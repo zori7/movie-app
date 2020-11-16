@@ -4,6 +4,19 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Navbar } from './components/Navbar'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
+import IRoute from './interfaces/IRoute'
+
+const routes: IRoute[] = [
+  {
+    path: '/',
+    component: Home,
+    exact: true,
+  },
+  {
+    path: '/about',
+    component: About,
+  },
+]
 
 const App: React.FC = () => {
   return (
@@ -11,8 +24,14 @@ const App: React.FC = () => {
       <Navbar />
       <div className="container">
         <Switch>
-          <Route path="/" component={Home} exact />
-          <Route path="/about" component={About} />
+          {routes.map((route) => (
+            <Route
+              path={route.path}
+              component={route.component}
+              exact={route.exact}
+              key={route.path}
+            />
+          ))}
         </Switch>
       </div>
     </BrowserRouter>
