@@ -6,8 +6,9 @@ import {
   SET_TITLE,
 } from './actionTypes'
 import { IState } from '../../interfaces/IState'
+import { IMovie } from '../../interfaces/IMovie'
 
-export const setMovies = (payload: object[]) => ({
+export const setMovies = (payload: IMovie[]) => ({
   type: SET_MOVIES,
   payload,
 })
