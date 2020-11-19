@@ -1,5 +1,8 @@
 import { AnyAction } from 'redux'
+import storage from 'redux-persist/lib/storage'
+import { persistReducer } from 'redux-persist'
 import {
+  SET_FAVORITES,
   SET_LOADING,
   SET_MOVIES,
   SET_PAGE,
@@ -10,6 +13,7 @@ import {
 const initialState = {
   title: '',
   movies: [],
+  favorites: [],
   loading: false,
   pagination: {
     page: 1,
@@ -19,7 +23,7 @@ const initialState = {
   },
 }
 
-export default (state = initialState, action: AnyAction) => {
+const reducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case SET_TITLE:
       return { ...state, title: action.payload }
@@ -27,6 +31,8 @@ export default (state = initialState, action: AnyAction) => {
       return { ...state, loading: action.payload }
     case SET_MOVIES:
       return { ...state, movies: action.payload }
+    case SET_FAVORITES:
+      return { ...state, favorites: action.payload }
     case SET_PAGINATION:
       return { ...state, pagination: action.payload }
     case SET_PAGE:
@@ -38,3 +44,12 @@ export default (state = initialState, action: AnyAction) => {
       return state
   }
 }
+
+const persistConfig = {
+  key: 'movies',
+  storage,
+  throttle: 500,
+  whitelist: ['favorites'],
+}
+
+export default persistReducer(persistConfig, reducer)

@@ -1,4 +1,5 @@
 import {
+  SET_FAVORITES,
   SET_LOADING,
   SET_MOVIES,
   SET_PAGE,
@@ -12,6 +13,25 @@ export const setMovies = (payload: IMovie[]) => ({
   type: SET_MOVIES,
   payload,
 })
+
+export const setFavorites = (payload: IMovie[]) => ({
+  type: SET_FAVORITES,
+  payload,
+})
+
+export const addFavorite = (payload: IMovie) => (dispatch: any, getState: () => IState) => {
+  const { movies: state } = getState()
+
+  dispatch(setFavorites([...state.favorites, payload]))
+}
+
+export const removeFavorite = (payload: string) => (dispatch: any, getState: () => IState) => {
+  const { movies: state } = getState()
+
+  const favorites = state.favorites.filter((movie) => movie.imdbID !== payload)
+
+  dispatch(setFavorites(favorites))
+}
 
 export const setTitle = (payload: string) => ({
   type: SET_TITLE,

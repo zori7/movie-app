@@ -22,7 +22,7 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Navbar />
-      <div className="container">
+      <div className="container fluid">
         <Switch>
           {routes.map((route) => (
             <Route
